@@ -1,0 +1,85 @@
+= Dokumentaion LF10b - Linux
+:toc:
+
+== Grundlegende Kommandos
+
+- `whoami` - zeigt den aktuell angemeldeten Benutzer an
+- `pwd` - zeigt das aktuelle Verzeichnis an
+- `ls` - zeigt den Inhalt eines Verzeichnisses an
+- `ls -a` - zeigt auch versteckte Dateien an
+- `ls -l` - zeight ausführliche Informationen zu Dateien an
+- `ls -t` - sortiert nach Änderungsdatum
+- `ls -r` - kehrt Sortierreihenfolge um
+- `cd <dir>` - _Change Directory_: wechselt in das Verzeichnis `<dir>`
+- `cd` - Wechselt von jedem Ort aus ins Heimatverzeichnis des aktuellen Benutzers
+
+== Pfadangaben
+
+Pfadangaben sind die "Wegbeschreibungen" zu Dateien oder Verzeichnissen. Es gibt zwei Arten von Pfadangaben:
+
+- *relative Pfadangaben* sind immer ausgehend vom aktuellen Verzeichnis, beginnen also *nie* mit einem Slash `/`. 
+- *absolute Pfadangaben* sind immmer ausgehend vom _Wurzelverzeichnis_ `/` und beginnen daher *immer* mit einem Slash `/`.
+
+== Sonderzeichen 
+
+Bestimmte Zeichen haben eine Sonderbedeutung für die BASH. Eins der wichtigsten Sonderzeichen ist der Leerschritt / Space. Dies ist das *Trennzeichen* für die Shell, trennt also z.B. ein Kommando und seine Optionen bzw. Argumente.
+
+Andere Sonderzeichen sind z.B.:
+
+- `*` _Asterisk_ steht für ein beliebiges Zeichen, dass *beliebig oft* vorkommen darf
+- `?` _Fragezeichen_ steht für ein beliebiges Zeichen, dass *exakt einmal* vorkommen darf
+- `!` History Expansion (s.u.)
+- `$` Zeichen für eine Substitution (Variabelsubstitution, Kommandosubstitution ...)
+- `\` _Escape Character_ maskiert das direkt darauf folgende Zeichen, hindert die Shell also daran, dieses mit einer Sonderbedeutung zu interpretieren
+- `~` _Tilde_ symbolisiert das Heimatverzeichnis des aktuellen Benutzers
+- etc.
+
+=== Escapen / Maskieren von Sonderzeichen
+
+Sonderzeichen können ihrer Sonderbedeutung durch _Escapen / Maskieren_ entledigt werden. Bzw. hindern wir die Shell daran dieses Sonderzeichen zu interpretieren.
+
+Sonderzeichen können entweder mit dem Backslash `\` maskiert werden, oder in einfache (`'`) oder doppelte (`"`) Anführungszeichen gesetzt werden.
+
+== Dateioperationen
+
+== touch
+
+Ändert den Zeitstempel einer vorhandenen Datei bzw. erstellt eine neue Datei ohne Inhalt.
+
+ touch newfile.txt
+
+== mkdir
+
+Mit dem Kommando `mkdir` können Verzeichnisse erstellt werden. Sollen in einem Rutsch mehrere Unterverzeichnisse erstellt werden, übergeben wir zusätzlich den Schalter `-p`.
+
+ mkdir my_dir
+
+ mkdir -p ~/my_dir/sub_dir/sub_sub_dir
+
+== cp
+
+- `cp <quelle> <ziel>` kopiert `<quelle>` nach `<ziel>`. Hierbei sind beides Dateien. Existiert `<ziel>` nicht, wird es erstellt, ansonsten ungefragt überschrieben.
+- `cp -i <quelle> <ziel>` so wird vor dem Überschreiben eine Nachfrage eingeblendet
+- `cp -r <verzeichnis> <ziel>` beim Kopieren von Verzeichnissen muss die Aktion _rekursiv_ durchgeführt werden (Option `-r`)
+- `cp -u <quelle> <ziel>` ersetzt `<ziel>` nur dann, wenn `<quelle>` neuer ist bzw. überhaupt Unterschiede vorhanden sind
+- `cp -p <quelle> <ziel>` behält Dateiatribute (Bestizer, Rechte, Timestamp) bei
+- `cp -a <quelle> <ziel>` behält auch Dateiatribute bei, enthält zusätzlich die Option `-r`.
+
+== mv
+
+Mit `mv` können Dateien verschoben und umbenannt werden.
+
+- `mv <quelle> <ziel>` verschiebt `<quelle>` nach `<ziel>`
+- `mv <quelle> <ziel>` benennt `<quelle>` in `<ziel>` um
+- Für `mv` gibt es keine Option `-r`. Sowohl `<quelle>` als auch `<ziel>` können Verzeichnisse sein. 
+- auch für `mv` gibt es die Option `-i`
+
+== rm
+
+- `rm <datei>` löscht `<datei>` ohne Nachfrage
+- `rm -r <verzeichnis>` löscht `<verzeichnis>`
+- auch für `rm` gibt es die Option `-i`
+
+== rmdir
+
+löscht *leere* Verzeichnisse
