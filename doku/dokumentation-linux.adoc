@@ -83,3 +83,92 @@ Mit `mv` können Dateien verschoben und umbenannt werden.
 == rmdir
 
 löscht *leere* Verzeichnisse
+
+== Wichtige Verzeichnisse
+
+- `/home/` - enthält die Heimatverzeichnisse der unpriveligierten Benutzer
+- `/home/tux/` - Heimatverzeichnis des Benutzers `tux`
+- `/home/lisa/` - Heimatverzeichnis der Benutzerin `lisa`
+- `/etc` - enthält sämtliche systemweiten Konfigurationsdateien
+
+== Variablen
+
+* es gibt zwei Arten von Variablen: 
+** *Shellvariablen*: sind nur in der aktuellen Shell gültig
+** *Umgebungsvariablen*: sind in allen Shells gültig (werden komplett in Großbuchstaben geschrieben [Konvention]), müssen in bestimmten Dateien konfiguriert werden (z.B. `~/.bashrc`, `~/.profile` etc.)
+* mit dem Kommado `export` kann eine Shellvariable auch in Subshells verfügbar gemacht werden
+
+== Subshells
+
+Eine Shell, die innerhalb einer anderen Shell gestartet wird. Passiert relativ oft, ohne dass wir es direkt merken, z.B. bei der _Kommandosubstitution_, beim Aufruf von Funktionen in Skripten usw. Eine Subshell ist abhängig von der Elternshell. Wird die Elternshell geschlossen, werden gleichzeitig auch alle Subshells geschlossen.
+
+== Konfigurationsdateien
+
+* Systemweite Konfigurationsdateien: liegen immer unter `/etc`, sind für alle Benutzer gültig (z.B. `/etc/bash.bashrc`)
+* Benutzerspezifische Konfigurationsdateien: liegen immer im Heimatverzeichnis des Benutzers, beginnen immer mit einem Punkt (`.`) oder liegen in einem Verzeichnis, das mit einem Punkt beginnt (z.B. `~/.bashrc`, `~/.config/htop`)
+* Einträge in den benutzerspezifischen Konfigurationsdateien überschreiben ggf. Einträge aus der systemweiten
+* So können Bentzer selbst gewisse Einstellungen vorhnehmen ohne Root-Rechte haben zu müssen, z.B. Aliase erstellen, die BASH konfigurieren...
+
+== Aliase
+
+* Aliase können z.B. dazu verwendet werden, häufig genutzte Kommandos inklusive deren Optionen abzukürzen:
+* z.B. bewirkt folgende Aliasdefinietion: `alias ll='ls -l'`, dass wir nun nur noch `ll` eingeben müssen, um das Kommando `ls -l` auszuführen
+* Aliase werden in Dateien konfiguriert, standardmässig in der `~/.bashrc` oder besser noch in der Datei `~/.bash_aliases`
+
+== Textströme 
+
+== UNIX-Philosophie
+
+1. Schreibe Programme so, dass sie *eine* Aufgabe erledigen, und diese gut machen
+2. Schreibe Programme so, dass sie zusammenarbeiten
+3. Schreibe Programme so, dass sie Textströme verarbeiten, denn Text ist eine universelle Schnittstelle
+
+== Standardkanäle 
+
+- Standardeingabekanal - `stdin` - Kanalnr. 0
+- Standardausgabekanal - `stdout` - Kanalnr. 1
+- Standardfehlerkanal - `stderr` - Kanalnr. 2
+
+== Redirect - Kanäle in Dateien umleiten
+
+Mit einem Redirect kann ein Datenstrom in eine *Datei* umgeleitet werden.
+
+- `>` Mit einem _einfachen_ Redirect wird der Standardausgabekanal oder der Standardfehlerkanal in eine Datei umgeleitet. Die Datei muss vorher nicht existiert haben, sie wird ggf. erzeugt. Eine bereits bestehende Datei wird zuerst geleert/der Inhalt gelöscht und anschließend mit dem Inhalt des Datenstroms beschrieben.
+
+ ls /etc 1> ausgabe_ls.txt     # stdout(1) in datei
+ ls /etc > ausgabe_ls.txt     # stdout(1) in datei
+
+ ls /gibtsnicht 2> fehler_ls.txt     # stderr(2) in datei
+
+- `>>` Mit einem _doppelten_ (anhängenden) Redirect wird der Inhalt des Datenstroms (`stdout` oder `stderr`) an eine bereits bestehende Datei angehängt. Eine nicht existierende Datei würde erzeugt werden.
+- `&>` So werden sowohl `stdout` als auch `stderr` in eine Datei umgeleitet
+
+ ls /etc /gibtsnicht &> ausgabe_und_fehler.txt
+
+`sterr` wird in `stdout` umgeleteitet und dann `stdout` in datei
+das `&1` ist nötig, damit der Shell klar ist, dass der Kanal 1 gemeint ist
+ansonsten würde die Datei `1` erstellt werden
+
+ ls /etc /gibtsnicht > ausgabe_und_fehler.txt 2>&1    
+
+- `<` Mit dem umgedrehten Redirect kann der Inhalt einer Datei an den Eingabekanal eines Kommandos geleitet werden
+
+ mail -s Mail_Subject empfaenger@mail.example < mailinhalt.txt
+
+== Pipe
+
+Mit der Pipe `|` wird der Ausgabekanal eines Kommandos an den Eingabekanal eines weiteren Kommandos umgeleitet.
+
+- `<Kommando1> | <kommando2>`
+
+ ls -l /etc | less
+ grep alias ~/.bashrc | grep -v `#`
+
+== Filterkommandos
+
+Wir nutzen Filterkommandos um aus einem Textstrom den Inhalt zu herauszufiltern, den wir haben wollen 
+
+=== grep
+
+
+=== cut
