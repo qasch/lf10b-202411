@@ -13,7 +13,7 @@ Kai Schell <kai.schell@signet.de>
 . Installiert den Webserver Apache2 mit folgendem Kommando: `sudo apt install apache2` (den brauchen wir später).
 . Erstellt einen neuen Benutzer namens `Ian Webber` mit dem Login `iwebber` und sorgt dafür, dass ihr euch als dieser Benutzer am System anmelden könnt.
 . Erstellt einen weiteren Benutzer namens `Prakti Kant` mit dem Login `praktikant`und sorgt dafür, dass ihr euch als dieser Benutzer am System anmelden könnt. 
-. *Zusatzaufgabe*: Wie könnt ihr sicherstellen, dass sich die neuen Benutzer am System anmelden können, ihr anschliessend aber keine Kenntnis mehr über dessen Passwort habt? Werft dazu einen Blick in die Manpage von `chage` und/oder `passwd`
+. *Zusatzaufgabe:* Wie könnt ihr sicherstellen, dass sich die neuen Benutzer am System anmelden können, ihr anschliessend aber keine Kenntnis mehr über dessen Passwort habt? Werft dazu einen Blick in die Manpage von `chage` und/oder `passwd`
 . Erstellt eine neue Gruppe namens `webdevs`.
 . Fügt die Benutzer `iwebber` und `praktikant` der Gruppe `webdevs` hinzu.
 . Erstellt ein neues Verzeichnis mit dem Namen `website` im Verzeichnis `/var/www/html`. 
@@ -28,7 +28,7 @@ Kai Schell <kai.schell@signet.de>
 . Ändert die Berechtigungen der `index.html` Datei so, dass der Besitzer die Datei lesen kann, Mitglieder der Gruppe die Datei lesen und schreiben können und alle anderen keine Berechtigungen haben. Überlegt euch, ob hier die _oktale_ oder die _symbolische_ Rechtevergabe schneller zum Ziel führt.
 . Ruft die Webseite in einem Browser (auf Linux Mint) folgendermassen auf: `http://localhost/website`.
 . *Oder* von eurem Windows aus: Ermittelt die IP Adresse eures Linux-Systems (mit `ip a`) und öffnet die Webseite dann folgendermassen in einem Browser auf euerm Window System: `http://<ip-addresse-linux>/website`.
-. Erstellt im Verzeichnis `website` eine weitere Datei namens `config.php`, setzt den Besitzer auf `www-data` und die Gruppe auf `webdevs` und sorgt dafür, dass der Webserver den Inhalt der Datei ändern kann.
+. Erstellt im Verzeichnis `website` eine weitere Datei namens `config.php` mit dem Inhalt `<?php phpinfo(); ?>`, setzt den Besitzer auf `www-data` und die Gruppe auf `webdevs`. Sorgt nun noch dafür, dass der Webserver User `www-data` den Inhalt der Datei ändern kann.
 . Erstellt im Verzeichnis `website` ein neues Verzeichnis namens `logs` und setzt den Besitzer auf `root` und die Gruppe auf `webdevs`.
 . Ändert die Berechtigungen des `logs` Verzeichnisses so, dass der Besitzer im Verzeichnis lesen, schreiben und ausführen kann, die Gruppe im Verzeichnis lesen und ausführen kann und alle anderen keine Berechtigungen haben. 
 . Erstellt zwei neue Dateien namens `access.log` und `error.log` im `logs` Verzeichnis und überprüft die Gruppenzugehörigkeiten der Dateien.
