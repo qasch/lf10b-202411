@@ -125,6 +125,8 @@ Eine Shell, die innerhalb einer anderen Shell gestartet wird. Passiert relativ o
 
 == Standardkanäle 
 
+Ein Kanal ist so etwas wie eine "Leitung" über die Daten bzw. Text innerhalb des Systems transportiert werden. Ein Kommanod sendet seine Ausgabe z.B. über den Standardausgabekanal an die Shell, so dass wir die Ausgabe auch sehen können.
+
 - Standardeingabekanal - `stdin` - Kanalnr. 0
 - Standardausgabekanal - `stdout` - Kanalnr. 1
 - Standardfehlerkanal - `stderr` - Kanalnr. 2
@@ -136,7 +138,9 @@ Mit einem Redirect kann ein Datenstrom in eine *Datei* umgeleitet werden.
 - `>` Mit einem _einfachen_ Redirect wird der Standardausgabekanal oder der Standardfehlerkanal in eine Datei umgeleitet. Die Datei muss vorher nicht existiert haben, sie wird ggf. erzeugt. Eine bereits bestehende Datei wird zuerst geleert/der Inhalt gelöscht und anschließend mit dem Inhalt des Datenstroms beschrieben.
 
  ls /etc 1> ausgabe_ls.txt     # stdout(1) in datei
- ls /etc > ausgabe_ls.txt     # stdout(1) in datei
+ ls /etc > ausgabe_ls.txt      # stdout(1) in datei
+
+Nur Fehler der Ausgabe in Datei umleiten:
 
  ls /gibtsnicht 2> fehler_ls.txt     # stderr(2) in datei
 
@@ -145,7 +149,7 @@ Mit einem Redirect kann ein Datenstrom in eine *Datei* umgeleitet werden.
 
  ls /etc /gibtsnicht &> ausgabe_und_fehler.txt
 
-`sterr` wird in `stdout` umgeleteitet und dann `stdout` in datei
+`stderr` wird in `stdout` umgeleteitet und dann `stdout` in datei
 das `&1` ist nötig, damit der Shell klar ist, dass der Kanal 1 gemeint ist
 ansonsten würde die Datei `1` erstellt werden
 
@@ -161,7 +165,12 @@ Mit der Pipe `|` wird der Ausgabekanal eines Kommandos an den Eingabekanal eines
 
 - `<Kommando1> | <kommando2>`
 
+Ausgabe des Kommandos `ls -l /etc` im Pager `less` anzeigen, anstatt direkt auf der Kommandozeile:
+
  ls -l /etc | less
+
+Den Inhalt der Datei `~/.bashrc` ohne Kommentarzeilen anzeigen:
+
  grep alias ~/.bashrc | grep -v `#`
 
 == Filterkommandos
@@ -188,9 +197,13 @@ Gesamten Inhalt der Datei `~/.bashrc` anzeigen, Kommentarzeilen *nicht* mit ausg
 
 Mit `cut` können wir Spalten/Felder/_Fields_ aus tabellarisch aufgebauten Dateien _ausschneiden_ bzw. filtern. Die wichtigen Optionen für `cut` sind `-d` zur Angabe des Trennzeichens (_Delimiter_) und `-f` zur Angabe der Spalte (_Field_). Bsp.:
 
-Ausschließlich die Login-Namen anzeigen lassen:
+Ausschließlich die Login-Namen der Benutzer anzeigen lassen (1. Feld/Spalte):
 
  cut -d: -f1 /etc/passwd
+
+Ausschließlich die Kommentarfelder/Vollnamen der Benutzer anzeigen lassen (5. Feld/Spalte):
+
+ cut -d: -f5 /etc/passwd
 
 === weitere Filterkommandos
 
@@ -227,11 +240,17 @@ Mit folgendem Kommando wird der Benutzer `tux` mit eigenem Heimatverzeichnis und
 
 Anschließend muss mit dem Kommando `passwd tux` (mit root-Rechten) noch ein Passwort für `tux` erstellt werden.
 
-Das interaktive Kommando `adduser` unter Debian ist ein Wrapper um `useradd`, welches zusätzlich ein Passswort erstellt.
+Das interaktive Kommando `adduser` unter Debian ist ein Wrapper um `useradd`, welches zusätzlich ein Passswort erstellt. Hier muss nur der Login-/Benutzername angegben werden:
 
-=== Benutzer ändern
+ adduser karlos
+
+=== Benutzerkonfiguration ändern
 
 Mit dem Kommando `usermod` können Eigenschaften von Benutzern geändert werden. Die Optionen sind sehr ähnlich zu `useradd`.
+
+Login Shell auf _BASH_ änder:
+
+ usermod -s /bin/bash tux
 
 === Gruppen anlegen
 
@@ -254,3 +273,7 @@ Damit ein Benutzer mittels `sudo` root-Rechte erlangen kann, fügen wir diesen B
  usermod -aG sudo tux
 
 Anschliessend kann der Benutzer `tux` mittels `sudo` root-Rechte erlangen
+
+**Hinweis:** `sudo` muss vorher auf dem System installiert sein, ansonsten können wir es wie folgt installieren:
+
+ apt install sudo
