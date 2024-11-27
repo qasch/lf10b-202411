@@ -170,5 +170,87 @@ Wir nutzen Filterkommandos um aus einem Textstrom den Inhalt zu herauszufiltern,
 
 === grep
 
+Alle Zeilen anzeigen, die das Pattern `alias` enthalten. Es wird immer die gesamte Zeile ausgegeben in der das Pattern vorkommt.
+
+ grep 'alias' ~/.bashrc
+
+Gesamten Inhalt der Datei `~/.bashrc` anzeigen, Kommentarzeilen *nicht* mit ausgeben
+
+ grep -v `#` ~/.bashrc 
+
+- `grep -i <pattern>`: Gross- und Kleinschreibung von `<pattern>` ist egal
+- `grep -n <pattern>`: Anzeige der Zeilennummer, in der `<pattern>` gefunden wurde
+- `grep -r <pattern> dir/`: Rekursive Suche, so kann über alle Dateien in einem Verzeichnis _gegrept_ werden
+- `grep -v <pattern>`: _inVert match_: Ausgabe wird _invertiert_, also nur die Zeilen ausgegeben, in denen `<pattern>` *nicht* vorkommt
+- `grep -c <pattern>`: gibt nicht die Zeilen aus, sondern nur die Anzahl der Zeilen in denen `<pattern>` vorkommt
 
 === cut
+
+Mit `cut` können wir Spalten/Felder/_Fields_ aus tabellarisch aufgebauten Dateien _ausschneiden_ bzw. filtern. Die wichtigen Optionen für `cut` sind `-d` zur Angabe des Trennzeichens (_Delimiter_) und `-f` zur Angabe der Spalte (_Field_). Bsp.:
+
+Ausschließlich die Login-Namen anzeigen lassen:
+
+ cut -d: -f1 /etc/passwd
+
+=== weitere Filterkommandos
+
+- `tr`: übersetzt ein Zeichen in einem Textstrom (es können keine Dateien als Argument übergeben werden) in ein anderes/löscht dieses etc... 
+
+ tr a A < datei.txt  # wandelt jedes kleine a in ein grosses A um
+
+- `wc`: gibt die Anzahl der Zeilen, Wörter und Bytes einer Datei an 
+
+ wc -l /etc/passwd`  # Anzahl Zeilen der Datei /etc/passwd
+
+== Benutzer und Gruppen
+
+Es gibt zwei Arten von Benutzern:
+* Systembenutzer/Pseudobenutzer
+* Reale Benutzer
+
+=== Dateien der Benutzerverwaltung
+
+* `/etc/passwd`: Liste aller Benutzer auf dem System, tabellarischer Aufbau, Manpage `man 5 passwd`, von allen lesbar
+* `/etc/shadow`: Passwörter der Benutzer, gesaltet und gehasht, Ablaufdaten der Passwörter
+* `/etc/group`: Liste aller Gruppen und deren Mitglieder
+* `/etc/gshadow`: Passwörter für Gruppen, wird eigentlich nicht verwendet
+
+=== Benutzer anlegen
+
+ useradd karl
+  
+Obiges Kommando erzeugt den Benutzer `karl`, es wird jedoch kein Heimatverzeichnis erstellt und die Shell ist die `/bin/sh`
+
+Mit folgendem Kommando wird der Benutzer `tux` mit eigenem Heimatverzeichnis und darin enthaltener Standarddateien (Kopie von `/etc/skel`) erzeugt, im Kommentarfeld der Name `Tux Tuxedo` und der BASH als Login Shell:
+
+ useradd -m -c 'Tux Tuxedo' -s /bin/bash tux
+
+Anschließend muss mit dem Kommando `passwd tux` (mit root-Rechten) noch ein Passwort für `tux` erstellt werden.
+
+Das interaktive Kommando `adduser` unter Debian ist ein Wrapper um `useradd`, welches zusätzlich ein Passswort erstellt.
+
+=== Benutzer ändern
+
+Mit dem Kommando `usermod` können Eigenschaften von Benutzern geändert werden. Die Optionen sind sehr ähnlich zu `useradd`.
+
+=== Gruppen anlegen
+
+Gruppe `gfn` erzeugen:
+
+ groupadd gfn
+
+Benutzer `tux` der Gruppe `gfn` hinzufügen:
+
+ usermod -aG gfn tux
+
+Wichtig ist hier das `-a`, ansonsten werden alle anderen Gruppenzugehörigkeiten von `tux` gelöscht.
+
+**Wichtig:** Gruppenzugehörigkeiten werden erst aktiv, wenn sich der Benutzer einmal komplett vom System ab- und wieder angemeldet hat.
+
+=== Benutzer ermöglichen, sudo auszuführen
+
+Damit ein Benutzer mittels `sudo` root-Rechte erlangen kann, fügen wir diesen Benutzer der Gruppe `sudo` hinzu:
+
+ usermod -aG sudo tux
+
+Anschliessend kann der Benutzer `tux` mittels `sudo` root-Rechte erlangen
