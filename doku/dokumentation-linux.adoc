@@ -277,3 +277,68 @@ Anschliessend kann der Benutzer `tux` mittels `sudo` root-Rechte erlangen
 **Hinweis:** `sudo` muss vorher auf dem System installiert sein, ansonsten können wir es wie folgt installieren:
 
  apt install sudo
+
+=== Besitzer ändern
+
+ chown <user:group> <datei>
+
+Besitzer der Datei `file1.txt` auf `tux` ändern:
+
+ chown tux file1.txt
+
+=== Gruppe ändern
+
+ chgrp group <datei>
+
+ chown :group <datei>
+
+=== Besitzer und Gruppe ändern
+
+ chown user:group <datei>
+
+== Dateibereichtungen
+
+ r : read 
+ w : write
+ x : execute
+
+ User Group Others
+ rw-  r--   r--
+
+== Berechtigungen setzen
+
+=== Symbolische Rechtevergabe
+
+ chmod g+w <datei>   # Schreibrecht für Gruppe hinzufügen
+
+ chmod u-w <datei>   # Schreibrecht für User entziehen
+
+ chmod go-rx <datei>   # Schreibrecht und Ausführungsrecht für Others und Gruppe entziehen
+
+ chmod u=rwx <datei>  # alle Rechte für Besitzer setzen
+
+=== Oktale/Numerische Rechtevergabe
+
+ r : read     4
+ w : write    2
+ x : execute  1
+
+       ugo
+ chmod 220 <datei>  u=w,g=w
+ chmod 620 <datei>  u=rw,g=w
+
+
+ Okt.   Bin.
+
+ 1      001
+ 2      010
+ 4      100 
+
+  7  6  4
+ 111110100
+ rwxrw-r--
+
+=== Standardberechtigungen
+
+* auf Datei: 644
+* auf Verzeichnis: 755
