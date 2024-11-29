@@ -1,0 +1,50 @@
+= Nextcloud Installation auf Debian 11
+
+Offizielle Dokumentation zur Installation von Nextcloud auf einem Ubuntu 22.04 LTS unter:
+
+https://docs.nextcloud.com/server/latest/admin_manual/installation/example_ubuntu.html
+
+Hier sind leichte Änderungen nötig, damit die Anleitung auch für Debian 11 funktioniert:
+
+== Änderungen bei der Installation der Pakete
+
+Wir müssen hier die PHP Module in der richtigen Version (PHP 8.4) installieren. Überall wo `php-<name>` steht, muss `php-` auf `php8.4-` geändert werden.
+
+Also z.B.:
+
+ php-curl
+
+ändern zu
+
+ php8.4-curl
+
+Und das für *alle* Pakete, die `php-` im Namen haben.
+
+== Datenbank
+
+`username` und `passwort` ersetzen, kann frei gewählt werden, ist der MySQL Benutzer mit Passwort. Also der Datenbankbenutzer, *kein* bestehender Linux User. Notiert euch Benutzername, Datenbankname und Passwort!
+
+== Nextcloud herunterladen
+
+*Entweder* das `.zip` oder das `.tar.bz2` Archiv herunterladen.
+
+Entweder auf euer Windows System, dann müsst ihr das Archiv danach aber noch mit `scp` auf den Debian Server hochladen. Oder ihr kopiert euch den Link und nutzt `wget` direkt auf dem Debian Server:
+
+ wget <download-link>
+
+== Verifizierung
+
+kann übersprungen werden
+
+== Webserver Konfiguration
+
+Wir verwenden die erste Konfiguration, die wo in der ersten Zeile `Alias` steht.
+
+Daran denken, die Konfiguration zu aktivieren mit `a2ensite nextcloud.conf`
+
+Nun noch das Rewrite Modul aktivieren mit `a2enmod rewrite`
+
+== Aufruf der Seite
+
+ http://<ip-debian>/nextcloud
+
